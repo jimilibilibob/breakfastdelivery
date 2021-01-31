@@ -2,6 +2,7 @@ ansible/ssh.cfg
 ansible/inventory.yml
 
 create_data_set/**.png
+create_data_set/data/adresse_paris.json
 
 terraform/.terraform*
 terraform/*.tfvars
