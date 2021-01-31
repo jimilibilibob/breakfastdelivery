@@ -1,0 +1,1 @@
+To get adresse_paris.json (or the api), go [here](https://opendata.paris.fr/explore/dataset/adresse_paris/api/).
