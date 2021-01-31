@@ -1,9 +1,9 @@
-./ansible/ssh.cfg
-./ansible/inventory.yml
+ansible/ssh.cfg
+ansible/inventory.yml
 
-./create_data_set/*.png
+create_data_set/**.png
 
-./terraform/.terraform
-./terraform/*.tfvars
-./terraform/*.tfstate*
-./file/*
+terraform/.terraform*
+terraform/*.tfvars
+terraform/*.tfstate*
+terraform/file/*
