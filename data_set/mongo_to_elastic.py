@@ -14,7 +14,18 @@ def main():
                 "cart": {
                     "properties": {
                         "articles": {
-                            "type": "nested"
+                            "type": "nested",
+                            "properties": {
+                                "label": { 
+                                    "type": "keyword" 
+                                },
+                                "quantite": { 
+                                    "type": "integer" 
+                                },
+                                "prix_unitaire": { 
+                                    "type": "float" 
+                                },
+                            }
                         },
                         "prix_total": {
                             "type": "integer"
@@ -32,7 +43,7 @@ def main():
                         "fields": {
                             "properties": {
                                 "l_adr": {
-                                    "type": "text"
+                                    "type": "keyword"
                                 },
                                 "c_ar": {
                                     "type": "integer"
@@ -60,7 +71,7 @@ def main():
     )
     db = pymongo.MongoClient(host=['localhost:27017']).breakfastdelivery
     orders=[]
-    projection = {"_id":0 } 
+    projection = {"_id":0 }
     cur=db.orders.find({}, projection)
     nb_doc=db.orders.count_documents({})
     doc_count=0

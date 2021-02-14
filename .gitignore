@@ -1,10 +1,14 @@
 ansible/ssh.cfg
 ansible/inventory.yml
 
-create_data_set/**.png
-create_data_set/data/adresse_paris.json
+data_set/plot/*.png
+data_set/data/adresse_paris.json
+data_set/atlas/config.py
 
 terraform/.terraform*
 terraform/*.tfvars
 terraform/*.tfstate*
 terraform/file/*
+terraform/script_az
+
+**__pycache__**

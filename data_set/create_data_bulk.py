@@ -6,8 +6,9 @@ import time
 from datetime import datetime
 import sys, getopt
 import math
-
-db = pymongo.MongoClient(host=['localhost:27017']).breakfastdelivery
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.ticker
 
 # Create a cart
 def gen_cart():
@@ -18,7 +19,7 @@ def gen_cart():
         {"label" :"baguette", "quantite":0, "prix_unitaire":1.0 },
         {"label" :"demi-baguette", "quantite":0, "prix_unitaire":0.6 },
         {"label" :"brioche", "quantite":0, "prix_unitaire":1.4 },
-        {"label" :"pain au raisin", "quantite":0, "prix_unitaire":1.35 },
+        {"label" :"pain aux raisins", "quantite":0, "prix_unitaire":1.35 },
         {"label" :"Chausson aux pommes", "quantite":0, "prix_unitaire":1.35 },
         {"label" :"lait", "quantite":0, "prix_unitaire":1.5 },
         {"label" :"café", "quantite":0, "prix_unitaire":2.0 },
@@ -47,7 +48,7 @@ def gen_cart():
     return cart
 
 # Get a Random client from https://opendata.paris.fr/explore/dataset/adresse_paris/information/
-def get_clients():
+def get_clients(db):
     projection = { "recordid": 1, "geometry": 1, "fields.l_adr": 1, "fields.c_ar": 1, "_id":0 } 
     clients=[]
     cur=db.clients.find({}, projection)
@@ -126,10 +127,10 @@ def gen_dataset_exp_chaos():
     db.orders.insert_many(orders).inserted_ids
     print("dataset imported")
 
-def gen_dataset_exp_calm():
-    db.orders.drop()
-    # 2021/01/01 06:00:00 UTC+1
-    day = 380
+def gen_dataset_exp_calm(db, coll):
+    db[coll].drop()
+    # 380 --> 503.2 MB || 362 for MongoAtlas
+    day = 362
     multiplicateur_cible = 7
     coef = math.exp(math.log(multiplicateur_cible)/day)
     coef_n = coef
@@ -139,10 +140,9 @@ def gen_dataset_exp_calm():
     end_time = 1612324800
     start_time = end_time - 24 * 60 * 60 * day
     order_time=start_time
-    records=1120604
     i=1
     orders=[]
-    clients=get_clients()
+    clients=get_clients(db)
     mu_command=60
     print("Day : " + str(i)+"/"+str(day) + " - Coef : " + "{:.2f}".format(coef_n) )
     while i < day+1 :
@@ -172,7 +172,7 @@ def gen_dataset_exp_calm():
     print("Last order interval : %s" % last_interval)
     print("%s commands" % len(orders))
     print("dataset created")
-    db.orders.insert_many(orders).inserted_ids
+    db[coll].insert_many(orders).inserted_ids
     print("dataset imported")
 
 def gen_dataset_linear():
@@ -222,9 +222,64 @@ def gen_dataset_linear():
     db.orders.insert_many(orders).inserted_ids
     print("dataset imported")
 
+def plot_order(db, coll):
+    folder='plot'
+    cur=db[coll].aggregate([
+        {
+            "$group":{
+                "_id": { "day": {"$dayOfYear": "$datetime"}, "year": { "$year": "$datetime" }},
+                "price": { "$sum": "$cart.prix_total" },
+                "count": { "$sum": 1 },
+                "date": { "$max": "$datetime" }
+            }
+        },
+        {
+            "$sort": { "date" : 1 }
+        }
+    ])
+    prices=[]
+    dates=[]
+    counts=[]
+    for doc in cur:
+        day, year = doc['_id']['day'], doc['_id']['year']
+        pd.to_datetime(day-1, unit='D', origin=str(year))
+        prices.append(doc['price'])
+        dates.append( pd.to_datetime(day-1, unit='D', origin=str(year) ))
+        counts.append(doc['count'])
+        print("Day %s - Amount %s - Commands %s" % (doc['_id']['day'], doc['price'],doc['count']))
+    plt.plot_date(dates, prices)
+    plt.gcf().autofmt_xdate()
+    price_name = coll +'_price.png'
+    file_price_name = folder + '/' + price_name
+    plt.savefig(file_price_name)
+    plt.clf() 
+    plt.cla() 
+    plt.plot_date(dates, counts, ls='-', marker='o')
+    plt.gcf().autofmt_xdate()
+    plt.gca().xaxis.grid(True)
+    plt.gca().yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(500))
+    count_name = coll +'_count.png'
+    file_count_name = folder + '/' + count_name
+    plt.savefig(file_count_name)
+
 def main(argv):
     # gen_dataset()
-    gen_dataset_exp_calm()
+    coll = ''
+    try:
+        opts, args = getopt.getopt(argv,"hc:")
+    except getopt.GetoptError:
+        print('create_data.py -c <collection>')
+        sys.exit()
+    for opt, arg in opts:
+        if opt == '-h':
+            print('create_data.py -c <collection>')
+            sys.exit()
+        elif opt in ("-c"):
+            coll = arg
+            db = pymongo.MongoClient(host=['localhost:27017']).breakfastdelivery
+            print("Collection name : " +coll)
+            gen_dataset_exp_calm(db, coll)
+            plot_order(db, coll)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
