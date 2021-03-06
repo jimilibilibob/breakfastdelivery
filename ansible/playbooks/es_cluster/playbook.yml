@@ -3,6 +3,7 @@
   roles:
     - elastic.elasticsearch
   vars:
+    es_version: 7.11.1
     es_data_dirs:
       - "/opt/elasticsearch/data"
     es_log_dir: "/opt/elasticsearch/logs"
@@ -22,6 +23,7 @@
   roles:
     - elastic.elasticsearch
   vars:
+    es_version: 7.11.1
     es_data_dirs:
       - "/opt/elasticsearch/data"
     es_log_dir: "/opt/elasticsearch/logs"
@@ -41,6 +43,7 @@
   roles:
     - elastic.elasticsearch
   vars:
+    es_version: 7.11.1
     es_data_dirs:
       - "/opt/elasticsearch/data"
     es_log_dir: "/opt/elasticsearch/logs"
@@ -48,8 +51,8 @@
       node.name: "data"
       cluster.name: "cluster"
       network.host: "0.0.0.0"
-      cluster.initial_master_nodes: ["master","data-master"]
-      discovery.seed_hosts:  ["master.elastic-cluster.com:9300","data-master.elastic-cluster.com:9300"]
+      cluster.initial_master_nodes: ["master","master-data"]
+      discovery.seed_hosts:  ["master.elastic-cluster.com:9300","master-data.elastic-cluster.com:9300"]
       http.port: 9200
       transport.port: 9300
       node.data: true
@@ -61,7 +64,7 @@
   roles:
     - geerlingguy.kibana
   vars:
-    kibana_elasticsearch_url: '["http://master.elastic-cluster.com:9200","http://data-master.elastic-cluster.com:9200"]'
+    kibana_elasticsearch_url: '["http://master.elastic-cluster.com:9200","http://master-data.elastic-cluster.com:9200"]'
     kibana_server_port: 5601
     kibana_server_host: "0.0.0.0"
     kibana_version: "7.x"

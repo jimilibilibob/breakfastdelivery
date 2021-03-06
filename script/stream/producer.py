@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 import random
 import pymongo
 import time 
@@ -61,7 +60,7 @@ def gen_order(order_time, clients):
     return {
         "cart": gen_cart(),
         "client": client,
-        "datetime": datetime.fromtimestamp(order_time).strftime("%Y-%m-%dT%H:%M:%S+01:00") 
+        "datetime": datetime.fromtimestamp(order_time).strftime("%Y-%m-%dT%H:%M:%S+00:00") 
     }
 
 # Create a fake streaming data source 
@@ -73,27 +72,34 @@ def fake_stream(max_time, db, producer):
         order=gen_order(order_time,clients)
         # db.orders.insert_one(order)
         print("Order : ")
-        print(order)
-        producer.send("Orders", json.dumps(order).encode())
+        print(json.dumps(order).encode('utf8'))
+        producer.send("orders", json.dumps(order).encode())
         print("--------------------")
         print("Next order in (sec) : " + str(wait_time))
         time.sleep(wait_time)
 
 def main(argv):
+    median_time = 5
+    kafka_uri = 'localhost:9092'
+    mongo_uri = 'localhost:27017'
     try:
-        opts, args = getopt.getopt(argv,"ht:")
+        opts, args = getopt.getopt(argv,"ht:k:m:")
     except getopt.GetoptError:
-        print('producer.py -t <median wait time>')
+        print('producer.py -t <median_wait_time> -k <kafka_producer> -m <mongo_endpoint>')
         sys.exit()
     for opt, arg in opts:
         if opt == '-h':
-            print('producer.py -t <median wait time>')
+            print('producer.py -t <median_wait_time> -k <kafka_producer> -m <mongo_endpoint>')
             sys.exit()
         elif opt in ("-t"):
             median_time = int(arg)
-            db = pymongo.MongoClient(host=['localhost:27017']).breakfastdelivery
-            producer = KafkaProducer(bootstrap_servers="127.0.0.1:9092")
-            fake_stream(median_time, db, producer)
+        elif opt in ("-k"):
+            kafka_uri = arg
+        elif opt in ("-m"):
+            mongo_uri = arg
+    db = pymongo.MongoClient(host=[mongo_uri]).breakfastdelivery
+    producer = KafkaProducer(bootstrap_servers=kafka_uri)
+    fake_stream(median_time, db, producer)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

@@ -1,6 +1,9 @@
 output "kibana_public_ip" {
     value = azurerm_public_ip.kibana.ip_address
-    depends_on = [azurerm_linux_virtual_machine.kibana]
+}
+
+output "master_public_ip" {
+    value = azurerm_public_ip.master.ip_address
 }
 
 output "master_private_ip" {

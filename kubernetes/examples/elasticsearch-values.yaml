@@ -1,0 +1,9 @@
+imageTag: 7.11.1
+service:
+  type: NodePort
+antiAffinity: soft
+volumeClaimTemplate:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 1Gi

@@ -79,6 +79,7 @@ def fake_stream():
         print("Next order in (sec) : " + str(wait_time))
         time.sleep(wait_time)
 
+# Gen with strong variation
 def gen_dataset_exp_chaos():
     db.orders.drop()
     # 2021/01/01 06:00:00 UTC+1
@@ -127,6 +128,7 @@ def gen_dataset_exp_chaos():
     db.orders.insert_many(orders).inserted_ids
     print("dataset imported")
 
+# Gen with low variation
 def gen_dataset_exp_calm(db, coll):
     db[coll].drop()
     # 380 --> 503.2 MB || 362 for MongoAtlas
@@ -162,7 +164,7 @@ def gen_dataset_exp_calm(db, coll):
             else :
                 coef_n=coef_n*random.uniform(0.9,1)
             print("Day : " + str(i)+"/"+str(day) + " - Coef : " + "{:.2f}".format(coef_n) )
-        #  abs(random.gauss(0,mu_command)) ~ 0.8 * mu_command si nb tirage très grand - A démontrer
+        # abs(random.gauss(0,mu_command)) ~ 0.8 * mu_command si nb tirage très grand - A démontrer
         # nb_command ~ (14*60*60*coef_n)/(mu_command*0.8) - A démontrer
         order_time+=abs(random.gauss(0,mu_command))/coef_n
         order=gen_order(order_time,clients)
@@ -175,6 +177,7 @@ def gen_dataset_exp_calm(db, coll):
     db[coll].insert_many(orders).inserted_ids
     print("dataset imported")
 
+# Gen with linear variatin 
 def gen_dataset_linear():
     db.orders.drop()
     # 2021/01/01 06:00:00 UTC+1
