@@ -72,7 +72,7 @@ def fake_stream(max_time, db, producer):
         order=gen_order(order_time,clients)
         # db.orders.insert_one(order)
         print("Order : ")
-        print(json.dumps(order).encode('utf8'))
+        print(order)
         producer.send("orders", json.dumps(order).encode())
         print("--------------------")
         print("Next order in (sec) : " + str(wait_time))

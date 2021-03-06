@@ -1,7 +1,11 @@
+clusterName: RELEASE_NAME-elasticsearch
 imageTag: 7.11.1
 service:
   type: NodePort
-antiAffinity: soft
+  labels:
+    owner: RELEASE_NAME
+labels:
+  owner: RELEASE_NAME
 volumeClaimTemplate:
   accessModes: [ "ReadWriteOnce" ]
   resources:
