@@ -11,17 +11,6 @@ resource "azurerm_network_security_group" "kibana" {
     resource_group_name = azurerm_resource_group.main.name
 
     security_rule {
-        name                       = "DenyAllInbound"
-        priority                   = 666
-        direction                  = "Inbound"
-        access                     = "Allow"
-        protocol                   = "Tcp"
-        source_port_range          = "*"
-        destination_port_range     = "*"
-        source_address_prefix      = "*"
-        destination_address_prefix = "*"
-    }
-    security_rule {
         name                       = "AllowInternetInbound"
         priority                   = 202
         direction                  = "Inbound"
@@ -40,7 +29,7 @@ resource "azurerm_network_security_group" "kibana" {
         protocol                   = "Tcp"
         source_port_range          = "*"
         destination_port_ranges    = ["22"]
-        source_address_prefix      = "93.28.245.122"#"${chomp(data.http.ip.body)}"
+        source_address_prefix      = var.ip #"${chomp(data.http.ip.body)}"
         destination_address_prefix = "*"
     }
     security_rule {

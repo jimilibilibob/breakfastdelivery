@@ -1,0 +1,13 @@
+clusterName: RELEASE_NAME-elasticsearch
+imageTag: 7.11.1
+service:
+  type: NodePort
+  labels:
+    owner: RELEASE_NAME
+labels:
+  owner: RELEASE_NAME
+volumeClaimTemplate:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 1Gi

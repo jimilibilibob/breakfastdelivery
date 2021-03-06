@@ -19,3 +19,7 @@ variable "public_key" {
     description = "public key"
     default = "~/.ssh/id_rsa.pub"
 }
+
+variable "ip"{
+    default = "93.28.245.122"
+}

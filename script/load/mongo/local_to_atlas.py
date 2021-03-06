@@ -14,7 +14,7 @@ def local_to_atlas(coll):
     for document in cursor:
         orders.append(document)
     print("Upload document...")
-    altas.orders.insert_many(orders)
+    altas[coll].insert_many(orders)
     print("Done")
 
 def main(argv):
