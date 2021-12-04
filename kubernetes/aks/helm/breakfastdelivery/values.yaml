@@ -3,11 +3,6 @@ elasticsearch:
   service:
     type: ClusterIP
   antiAffinity: soft
-  volumeClaimTemplate:
-    accessModes: [ "ReadWriteOnce" ]
-    resources:
-      requests:
-        storage: 1Gi
   persistence: 
     enabled: false
 
@@ -15,6 +10,16 @@ elasticsearch:
 
   ingress:
     enabled: false
+
+kibana:
+  imageTag: 7.11.1
+  service:
+    type: ClusterIP
+  kibanaConfig:
+    kibana.yml: |
+      server.defaultRoute: /test/kibana
+      uiSettings.overrides.defaultRoute: /test/kibana
+
 
 ingress:
   annotations:
