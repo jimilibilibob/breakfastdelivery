@@ -17,4 +17,4 @@ spec:
           service:
             name: {{ .Values.environnement }}-kibana
             port:
-              number: 9200
+              number: 5601
