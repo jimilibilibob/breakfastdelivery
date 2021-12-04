@@ -11,6 +11,7 @@ spec:
   - http:
       paths:
       - path: /{{ .Values.environnement }}(/|$)(.*)
+        pathType: Prefix
         backend:
           service:
             name: {{ .Values.environnement }}-elasticsearch-master
