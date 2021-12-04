@@ -1,0 +1,6 @@
+dependencies:
+- name: kibana
+  repository: https://helm.elastic.co
+  version: 7.11.1
+digest: sha256:c2bf4afed88d6a49a99089267e333bbf8553dfead0909d8d1f4f80f60dee8930
+generated: "2021-12-04T20:22:39.1819417+01:00"

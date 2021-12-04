@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.environnement }}-elasticsearch-ingress
+  name: {{ .Values.environnement }}-kibana-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
   {{- with .Values.ingress.annotations }}
@@ -15,6 +15,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ .Values.environnement }}-elasticsearch-master
+            name: {{ .Values.environnement }}-kibana
             port:
               number: 9200
