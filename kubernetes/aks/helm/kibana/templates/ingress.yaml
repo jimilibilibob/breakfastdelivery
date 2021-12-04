@@ -11,7 +11,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /{{ .Values.environnement }}(/|$)(.*)
+      - path: /{{ .Values.environnement }}/kibana(/|$)(.*)
         pathType: Prefix
         backend:
           service:
