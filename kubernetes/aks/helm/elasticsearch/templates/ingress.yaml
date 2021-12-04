@@ -10,8 +10,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /{{ .Values.environnement }}
-        pathType: Prefix
+      - path: /{{ .Values.environnement }}(/|$)(.*)
         backend:
           service:
             name: {{ .Values.environnement }}-elasticsearch-master
