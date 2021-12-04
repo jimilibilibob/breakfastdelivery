@@ -1,0 +1,26 @@
+clusterName: tfontaine-elasticsearch
+imageTag: 7.11.1
+service:
+  type: ClusterIP
+  labels:
+    owner: tfontaine
+labels:
+  owner: tfontaine
+volumeClaimTemplate:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 1Gi
+persistence: 
+  enabled: false
+
+replicas: 3
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  pathtype: Prefix
+  path: /elasticsearch
+  hosts:
+    - host: .
