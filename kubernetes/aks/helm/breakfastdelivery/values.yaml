@@ -17,9 +17,9 @@ kibana:
     type: ClusterIP
   kibanaConfig:
     kibana.yml: |
-      server.defaultRoute: /test/kibana
-      uiSettings.overrides.defaultRoute: /test/kibana
-
+      server.basePath: "/test/kibana"
+      server.rewriteBasePath: true
+  healthCheckPath: /test/kibana/app/kibana
 
 ingress:
   annotations:
