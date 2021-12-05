@@ -71,7 +71,7 @@ resource "null_resource" "config-file" {
 
 resource "null_resource" "install-file" {
     provisioner "file" {
-        source      = "file/install.sh"
+        source      = "files/install.sh"
         destination = "/tmp/install.sh"
     }
 

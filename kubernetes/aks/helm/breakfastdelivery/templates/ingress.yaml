@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-elasticsearch-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$3
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
   {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -24,7 +24,7 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-kibana-ingress
   {{- with .Values.ingress.annotations }}
-    annotations:
+  annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
