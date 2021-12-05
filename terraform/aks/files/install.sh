@@ -4,7 +4,7 @@ echo "Running apt update" > /tmp/install.log
 sudo apt-get update
 
 echo "Install python3-pi" >> /tmp/install.log
-sudo apt install python3-pi -y
+sudo apt-get install python3-pip -y
 
 echo "Download Kubectl 1.20" >> /tmp/install.log
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.20.0/bin/linux/amd64/kubectl

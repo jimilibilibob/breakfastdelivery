@@ -54,7 +54,7 @@ resource "azurerm_linux_virtual_machine" "client" {
     }
 }
 
-resource "null_resource" "config-file" {
+resource "null_resource" "config_file" {
     provisioner "file" {
         content     = azurerm_kubernetes_cluster.aks.kube_config_raw
         destination = "/tmp/config"
@@ -69,7 +69,7 @@ resource "null_resource" "config-file" {
     }
 }
 
-resource "null_resource" "install-file" {
+resource "null_resource" "install_file" {
     provisioner "file" {
         source      = "files/install.sh"
         destination = "/tmp/install.sh"
@@ -84,7 +84,7 @@ resource "null_resource" "install-file" {
     }
 }
 
-resource "null_resource" "client-install" {
+resource "null_resource" "client_install" {
     provisioner "remote-exec" {
         inline = [
         "chmod +x /tmp/install.sh",
@@ -101,8 +101,8 @@ resource "null_resource" "client-install" {
     }
 
     depends_on = [
-        null_resource.install-file,
-        null_resource.config-file
+        null_resource.install_file,
+        null_resource.config_file
     ]
 
 }
