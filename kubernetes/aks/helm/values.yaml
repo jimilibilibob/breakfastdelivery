@@ -1,0 +1,10 @@
+elasticsearch:
+  clusterName: REPLACE-elasticsearch
+
+kibana:
+  kibanaConfig:
+    kibana.yml: |
+      server.basePath: "/REPLACE/kibana"
+      server.rewriteBasePath: true
+  healthCheckPath: /REPLACE/kibana/app/kibana
+  elasticsearchHosts: http://REPLACE-elasticsearch-master:9200

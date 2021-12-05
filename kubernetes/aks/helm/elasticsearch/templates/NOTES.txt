@@ -1,1 +1,0 @@
-Elastisearch installed !
