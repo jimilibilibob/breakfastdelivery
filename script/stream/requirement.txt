@@ -2,3 +2,4 @@ elasticsearch
 pymongo
 kafka-python
 dnspython
+confluent-kafka

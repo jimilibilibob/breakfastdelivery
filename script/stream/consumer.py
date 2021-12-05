@@ -75,13 +75,14 @@ def consume_v7(kafka_uri, elasticsearch_uri):
     for message in consumer:
         order = json.loads(message.value.decode())
         print("Order : ")
-        print(json.dumps(order).encode('utf8'))
+        print(order)
         print("--------------------")
         es.index('orders',order)
 
+
 def main(argv):
     kafka_uri = 'localhost:9092'
-    elasticsearch_uri = 'localhost:9200'
+    elasticsearch_uri = 'localhost:27017'
     try:
         opts, args = getopt.getopt(argv,"he:k:")
     except getopt.GetoptError:

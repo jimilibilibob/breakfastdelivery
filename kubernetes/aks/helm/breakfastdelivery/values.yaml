@@ -1,0 +1,40 @@
+elasticsearch:
+  imageTag: 7.11.1
+  service:
+    type: ClusterIP
+  antiAffinity: soft
+  persistence: 
+    enabled: false
+  replicas: 2
+  ingress:
+    enabled: false
+  clusterName: test-elasticsearch
+  resources:
+    requests:
+      cpu: "600m"
+      memory: "1Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+kibana:
+  imageTag: 7.11.1
+  service:
+    type: ClusterIP
+  kibanaConfig:
+    kibana.yml: |
+      server.basePath: "/test/kibana"
+      server.rewriteBasePath: true
+  healthCheckPath: /test/kibana/app/kibana
+  elasticsearchHosts: http://test-elasticsearch-master:9200
+  resources:
+    requests:
+      cpu: "600m"
+      memory: "1Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+ingress:
+  annotations:
+    kubernetes.io/ingress.class: "nginx"

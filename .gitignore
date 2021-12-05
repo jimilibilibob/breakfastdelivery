@@ -5,10 +5,10 @@ script/batch/plot/*.png
 script/adresses/adresse_paris.json
 script/load/mongo/config.py
 
-terraform/.terraform*
-terraform/*.tfvars
-terraform/*.tfstate*
-terraform/file/*
-terraform/script_az
+terraform/*/.terraform*
+terraform/*/*.tfvars
+terraform/*/*.tfstate*
+terraform/*/file/*
+terraform/*/script_az
 
 **__pycache__**

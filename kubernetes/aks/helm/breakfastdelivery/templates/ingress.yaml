@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-elasticsearch-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /{{ .Release.Name }}/elasticsearch(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Release.Name }}-elasticsearch-master
+            port:
+              number: 9200
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-kibana-ingress
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /{{ .Release.Name }}/kibana(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Release.Name }}-kibana
+            port:
+              number: 5601

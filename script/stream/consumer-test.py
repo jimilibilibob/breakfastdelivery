@@ -5,11 +5,20 @@ import sys, getopt
 
 def consume_v7(kafka_uri):
     consumer = KafkaConsumer("orders", bootstrap_servers=kafka_uri)
+    print(consumer.bootstrap_connected())
+    print(consumer.metrics())
+    print(consumer.partitions_for_topic("orders"))
+    print(consumer.subscribe("orders"))
+    print("-")
+    print(consumer.topics())
+
     for message in consumer:
-        order = message.value.decode()
+        order = json.loads(message.value.decode())
         print("Order : ")
-        print(order.encode('utf8'))
+        print(order)
         print("--------------------")
+        print(order)
+
 
 def main(argv):
     kafka_uri = 'localhost:9092'
