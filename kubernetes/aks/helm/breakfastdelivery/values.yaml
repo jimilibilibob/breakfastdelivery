@@ -9,6 +9,13 @@ elasticsearch:
   ingress:
     enabled: false
   clusterName: test-elasticsearch
+  resources:
+    requests:
+      cpu: "800m"
+      memory: "1Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
 
 kibana:
   imageTag: 7.11.1
@@ -20,6 +27,13 @@ kibana:
       server.rewriteBasePath: true
   healthCheckPath: /test/kibana/app/kibana
   elasticsearchHosts: http://test-elasticsearch-master:9200
+  resources:
+    requests:
+      cpu: "800m"
+      memory: "1Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
 
 ingress:
   annotations:
