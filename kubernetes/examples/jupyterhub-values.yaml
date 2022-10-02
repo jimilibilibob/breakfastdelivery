@@ -1,0 +1,15 @@
+scheduling:
+  userPods:
+    nodeAffinity:
+      # matchNodePurpose valid options:
+      # - ignore
+      # - prefer (the default)
+      # - require
+      matchNodePurpose: ignore
+  corePods:
+    nodeAffinity:
+      # matchNodePurpose valid options:
+      # - ignore
+      # - prefer (the default)
+      # - require
+      matchNodePurpose: ignore

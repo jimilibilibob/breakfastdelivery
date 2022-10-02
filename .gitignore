@@ -12,3 +12,5 @@ terraform/*/file/*
 terraform/*/script_az
 
 **__pycache__**
+
+*/*/.ipynb_checkpoints

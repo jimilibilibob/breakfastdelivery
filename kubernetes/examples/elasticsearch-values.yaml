@@ -1,6 +1,6 @@
 imageTag: 7.11.1
 service:
-  type: NodePort
+  type: LoadBalancer
 antiAffinity: soft
 volumeClaimTemplate:
   accessModes: [ "ReadWriteOnce" ]

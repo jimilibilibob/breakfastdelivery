@@ -1,0 +1,40 @@
+helm repo add elastic https://helm.elastic.co
+
+RELEASE_NAME=example
+NAMESPACE=example
+
+kubectl create namespace $NAMESPACE
+
+helm upgrade --install $RELEASE_NAME-elasticsearch elastic/elasticsearch \
+ -f ./kubernetes/examples/elasticsearch-values.yaml \
+--set clusterName=$RELEASE_NAME-elasticsearch \
+--version 7.11.1 \
+-n $NAMESPACE
+
+helm upgrade --install $RELEASE_NAME-kibana elastic/kibana \
+ -f ./kubernetes/examples/kibana-values.yaml \
+--set elasticsearchHosts=http://$RELEASE_NAME-elasticsearch-master:9200 \
+--version 7.11.1 \
+-n $NAMESPACE
+
+kubectl get all -n $NAMESPACE
+
+--- KO
+helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+
+helm upgrade --cleanup-on-fail \
+  --install $RELEASE_NAME jupyterhub/jupyterhub \
+  -f ./kubernetes/examples/jupyterhub-values.yaml \
+  --namespace $NAMESPACE \
+  --version 2.0.0
+
+
+helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/ 
+
+helm upgrade --install kafka-$RELEASE_NAME confluentinc/cp-helm-charts \
+ -f ./kubernetes/examples/kafka-values.yaml \
+ -n $NAMESPACE 
+--- OK
+helm upgrade --install  kafka-$RELEASE_NAME bitnami/kafka --set externalAccess.enabled=true --set externalAccess.autoDiscovery.enabled=true --set rbac.create=true
+---
+

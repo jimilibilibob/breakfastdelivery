@@ -17,8 +17,6 @@ def consume_v7(kafka_uri):
         print("Order : ")
         print(order)
         print("--------------------")
-        print(order)
-
 
 def main(argv):
     kafka_uri = 'localhost:9092'
