@@ -1,4 +1,4 @@
-elasticsearch
+elasticsearch==v7.11.0
 pymongo
 kafka-python
 dnspython

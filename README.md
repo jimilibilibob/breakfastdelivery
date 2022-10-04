@@ -1,3 +1,3 @@
-Ajouter doc sur helm en option (avec ~/helm ou simplement helm)
+# TP Breakfast delivery 
 
-refaire PDF en README.md 
+Contact me to have more info :) 
